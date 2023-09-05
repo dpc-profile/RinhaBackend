@@ -58,6 +58,11 @@ services:
     ports:
       - '3306:3306'
     restart: on-failure
+    environment:
+      - MYSQL_SERVER=mysql_db
+      - MYSQL_DATABASE=db
+      - MYSQL_ROOT_PASSWORD=asd09u123ncv
+      
     deploy:
       resources:
         limits:

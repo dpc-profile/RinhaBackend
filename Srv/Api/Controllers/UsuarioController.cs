@@ -1,24 +1,31 @@
-namespace Api.Controllers
+namespace Api.Controllers;
+
+[Route("/pessoas")]
+[ApiController]
+public class UsuarioController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsuarioController : ControllerBase
+    private readonly ILogger<UsuarioController> _logger;
+
+    public UsuarioController(ILogger<UsuarioController> logger)
     {
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        _logger = logger;
+    }
 
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
+    [HttpPost]
+    public void Post([FromBody] string value)
+    {
+    }
 
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+    [HttpGet("{uuid}")]
+    public ActionResult<string> Get(string uuid)
+    {
+        return "value";
+    }
+
+    [HttpGet()]
+    public ActionResult<IEnumerable<string>> GetPorTermo(string t)
+    {
+        string resultadoDaPesquisa = $"Você pesquisou por: {t}";
+        return new string[] { resultadoDaPesquisa, "value2" };
     }
 }
