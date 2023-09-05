@@ -1,0 +1,65 @@
+version: "3.9"
+services:
+  api1: # API - Instância 01
+    image: api
+    hostname: api1
+    depends_on:
+      - db
+      - redis
+    expose:
+      - "80"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.20"
+          memory: "0.375GB"
+
+  api2: # API - Instância 02
+    image: api
+    hostname: api2
+    depends_on:
+      - db
+      - redis
+    expose:
+      - "80"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.20"
+          memory: "0.375GB"
+
+  nginx: # Load Balancer
+    image: nginx:latest
+    volumes:
+      - ./configs/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api1
+      - api2
+    ports:
+      - "9999:9999"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: "0.5GB"
+  
+  redis: # Cache
+    image: redis:alpine
+    ports:
+       - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.10"
+          memory: "0.250GB"
+
+  db: # Banco de dados
+    image: mysql:8.1
+    ports:
+      - '3306:3306'
+    restart: on-failure
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: "1.5GB"
