@@ -1,3 +1,5 @@
+using Xunit;
+
 namespace TesteAPI;
 
 public class UnitTest1
