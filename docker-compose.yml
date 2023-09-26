@@ -59,7 +59,7 @@ services:
       - '3306:3306'
     restart: on-failure
     environment:
-      - MYSQL_SERVER=mysql_db
+      - MYSQL_SERVER=db
       - MYSQL_DATABASE=db
       - MYSQL_ROOT_PASSWORD=asd09u123ncv
     deploy:
@@ -67,3 +67,16 @@ services:
         limits:
           cpus: "0.75"
           memory: "1.5GB"
+
+  myAdmin:
+    image: phpmyadmin:5.2.1
+    ports:
+      - 8081:8081
+    links:
+      - db
+    environment:
+      PMA_HOST: 'db'
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    depends_on:
+      - db

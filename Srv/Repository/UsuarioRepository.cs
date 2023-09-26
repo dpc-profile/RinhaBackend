@@ -2,12 +2,12 @@ namespace Api.Repository;
 
 public class UsuarioRepository : IUsuarioRepository
 {
-    public Task<UsuarioModel> BuscarPorId(Guid uuid)
+    public Task<DBUsuarioModel> BuscarPorId(Guid uuid)
     {
         throw new NotImplementedException();
     }
 
-    public Task<UsuarioModel> BuscarPorTermo(string termo)
+    public Task<DBUsuarioModel> BuscarPorTermo(string termo)
     {
         throw new NotImplementedException();
     }

@@ -1,2 +1,26 @@
 ###
+GET http://localhost:5132/pessoas/f7379ae8-8f9b-4cd5-8221-51efe19e721b
+
+###
 GET http://localhost:5132/pessoas?t=NovaPesquisa
+
+###
+POST http://localhost:5132/pessoas
+Content-Type: application/json
+
+{
+    "nome": "Mario",
+    "Apelido": "Do Armario",
+    "Nascimento": "1985-13-09",
+    "stack" : ["C#", "Node", "Oracle"]
+}
+
+###
+POST http://localhost:5132/pessoas
+Content-Type: application/json
+
+{
+    "nome": "Mario",
+    "Apelido": "Do Armario",
+    "Nascimento": "1985-13-09"
+}
