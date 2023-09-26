@@ -26,16 +26,10 @@ public class UsuarioController : ControllerBase
                 Apelido = pessoaDto.Apelido
             };
 
-            IEnumerable<string>? stack = pessoaDto.Stack;
-            if (stack != null)
-            {
-                foreach (string item in stack)
-                {
-                    usuario.Stack = usuario.Stack + item + ", ";
-                }
-            }
+            if (pessoaDto.Stack != null)
+                usuario.Stack = string.Join( ", ", pessoaDto.Stack);
 
-            return Created($"/pessoa/{usuario.Id}", pessoaDto);
+            return Created($"/pessoa/{usuario.Id}", usuario);
         }
         catch (BadRequestException e)
         {
