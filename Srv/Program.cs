@@ -9,6 +9,8 @@ builder.Services.AddDbContext<BancoContexto>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
+// builder.Services.AddDbContext<BancoContexto>(options => options.UseInMemoryDatabase("DBMemoria"));
+
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();

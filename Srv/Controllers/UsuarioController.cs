@@ -29,7 +29,7 @@ public class UsuarioController : ControllerBase
             if (pessoaDto.Stack != null)
                 usuario.Stack = string.Join( ", ", pessoaDto.Stack);
 
-            usuario.CampoSearch += $"{usuario.Nome}, {usuario.Apelido}, {usuario.Stack}";
+            usuario.CampoSearch += $"{usuario.Nome},{usuario.Apelido},{usuario.Stack}";
 
             return Created($"/pessoa/{usuario.Id}", usuario);
         }
