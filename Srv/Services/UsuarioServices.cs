@@ -1,21 +1,40 @@
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
 
 class UsuarioServices : IUsuarioServices
 {
-    
+    private readonly BancoContexto _contexto;
 
-    public Task CadastraUsuario(DBUsuarioModel usuario)
+    public UsuarioServices(BancoContexto contexto)
     {
-        throw new NotImplementedException();
+        _contexto = contexto;
     }
 
-    public Task ConsultaPorTermo(string termo)
+    public async Task CadastraUsuarioAsync(DBUsuarioModel usuario)
     {
-        throw new NotImplementedException();
+        await _contexto.Usuarios.AddAsync(usuario);
+        await _contexto.SaveChangesAsync();
     }
 
-    public Task ConsultaPorUUID(string uuid)
+    public async Task<List<DBUsuarioModel>> ConsultaPorTermoAsync(string termo)
+    {
+        return await _contexto.Usuarios
+            .Where(x => EF.Functions.Like(x.CampoSearch, $"%{termo}%"))
+            .ToListAsync();
+    }
+
+    public async Task<DBUsuarioModel?> ConsultaPorUUIDAsync(string uuid)
+    {
+        return await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Id == uuid);
+    }
+
+    public async Task<List<DBUsuarioModel>> RetornaTudoAsync()
+    {
+        return await _contexto.Usuarios.ToListAsync();
+    }
+
+    public Task<int> CountUsuariosCadastradosAsync()
     {
         throw new NotImplementedException();
     }

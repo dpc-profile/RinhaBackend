@@ -1,3 +1,4 @@
+
 namespace Api.Controllers;
 
 [Route("/pessoas")]
@@ -5,14 +6,16 @@ namespace Api.Controllers;
 public class UsuarioController : ControllerBase
 {
     private readonly ILogger<UsuarioController> _logger;
+    private readonly IUsuarioServices _usuarioServices;
 
-    public UsuarioController(ILogger<UsuarioController> logger)
+    public UsuarioController(ILogger<UsuarioController> logger, IUsuarioServices usuarioServices)
     {
         _logger = logger;
+        _usuarioServices = usuarioServices;
     }
 
     [HttpPost]
-    public ActionResult Post([FromBody] PessoaDto pessoaDto)
+    public async Task<ActionResult> PostAsync([FromBody] PessoaDto pessoaDto)
     {
         try
         {
@@ -20,7 +23,7 @@ public class UsuarioController : ControllerBase
 
             DBUsuarioModel usuario = new()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString(),
                 Nome = pessoaDto.Nome,
                 Nascimento = pessoaDto.Nascimento,
                 Apelido = pessoaDto.Apelido
@@ -31,7 +34,9 @@ public class UsuarioController : ControllerBase
 
             usuario.CampoSearch += $"{usuario.Nome},{usuario.Apelido},{usuario.Stack}";
 
-            return Created($"/pessoa/{usuario.Id}", usuario);
+            await _usuarioServices.CadastraUsuarioAsync(usuario);
+
+            return Created($"/pessoa/{usuario.Id}", pessoaDto);
         }
         catch (BadRequestException e)
         {
@@ -44,15 +49,16 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpGet("{uuid}")]
-    public ActionResult<string> Get(string uuid)
+    public async Task<ActionResult<string>> GetPorUuidAsync(string uuid)
     {
-        return Ok("value1");
+        var resposta = await _usuarioServices.ConsultaPorUUIDAsync(uuid);
+        return Ok(resposta);
     }
 
     [HttpGet()]
     public ActionResult<IEnumerable<string>> GetPorTermo(string t)
     {
-        string resultadoDaPesquisa = $"Você pesquisou por: {t}";
-        return Ok(new string[] { resultadoDaPesquisa, "value2" });
+        var resposta = _usuarioServices.ConsultaPorTermoAsync(t);
+        return Ok(resposta);
     }
 }

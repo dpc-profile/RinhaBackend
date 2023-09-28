@@ -6,7 +6,7 @@ public class DBUsuarioModel
 {
     [Key]
     [Required]
-    public Guid Id { get; set;}
+    public string? Id { get; set;}
     [Required(ErrorMessage = "Apelido é obrigatório.")]
     [MaxLength(length: 32, ErrorMessage = "Apelido deve ter no maximo 32 caracteres")]
     public string? Apelido { get; set;}

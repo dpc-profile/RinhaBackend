@@ -5,15 +5,15 @@ var builder = WebApplication.CreateBuilder(args);
 string? connectionString = builder.Configuration.GetConnectionString("DbConnection");
 
 // Add services to the container.
-builder.Services.AddDbContext<BancoContexto>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-);
+// builder.Services.AddDbContext<BancoContexto>(options =>
+//     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+// );
 
-// builder.Services.AddDbContext<BancoContexto>(options => options.UseInMemoryDatabase("DBMemoria"));
+builder.Services.AddDbContext<BancoContexto>(options => options.UseInMemoryDatabase("DBMemoria"));
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioServices, UsuarioServices>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
