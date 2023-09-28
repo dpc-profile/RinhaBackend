@@ -20,7 +20,7 @@ public class PessoaDto
     {
         // Validações
         // UnprocessableEntity
-        //      Nome já cadastrado
+        //      Apelido já cadastrado
         //      X Nome nulo
         //      X Apelido nulo
         //

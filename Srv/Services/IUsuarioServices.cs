@@ -4,7 +4,8 @@ public interface IUsuarioServices
 {
     public Task CadastraUsuarioAsync(DBUsuarioModel usuario);
     public Task<DBUsuarioModel?> ConsultaPorUUIDAsync(string uuid);
-    public Task<List<DBUsuarioModel>> ConsultaPorTermoAsync(string termo);
-    public Task<List<DBUsuarioModel>> RetornaTudoAsync();
+    public Task ProcurarUsuarioAsync(string apelido);
+    public Task<IEnumerable<RespostaGetDto>> ConsultaPorTermoAsync(string termo);
+    public Task<IEnumerable<DBUsuarioModel>> RetornaTudoAsync();
     public Task<int> CountUsuariosCadastradosAsync();
 }

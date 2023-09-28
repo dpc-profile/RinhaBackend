@@ -4,12 +4,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 string? connectionString = builder.Configuration.GetConnectionString("DbConnection");
 
-// Add services to the container.
-// builder.Services.AddDbContext<BancoContexto>(options =>
-//     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-// );
+builder.Services.AddDbContext<BancoContexto>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+);
 
-builder.Services.AddDbContext<BancoContexto>(options => options.UseInMemoryDatabase("DBMemoria"));
+// builder.Services.AddDbContext<BancoContexto>(options => options.UseInMemoryDatabase("DBMemoria"));
 
 builder.Services.AddControllers();
 

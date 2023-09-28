@@ -1,11 +1,17 @@
 ###
+GET http://localhost:5132/contagem-pessoas
+
+###
+GET http://localhost:5132/todos-usuarios
+#==========================================================================
+###
 GET http://localhost:5132/pessoas/bac2d3be-1569-4b68-8bb7-bc0fc6765389
 
 ###
-GET http://localhost:5132/pessoas?t=node
+GET http://localhost:5132/pessoas?t=armario
 
 ###
-GET http://localhost:5132/pessoas
+GET http://localhost:5132/pessoas?t=
 
 ###
 POST http://localhost:5132/pessoas

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 
 namespace Api.Controllers;
 
@@ -20,6 +21,8 @@ public class UsuarioController : ControllerBase
         try
         {
             pessoaDto.Validate();
+
+            await _usuarioServices.ProcurarUsuarioAsync(pessoaDto.Apelido);
 
             DBUsuarioModel usuario = new()
             {
@@ -51,14 +54,29 @@ public class UsuarioController : ControllerBase
     [HttpGet("{uuid}")]
     public async Task<ActionResult<string>> GetPorUuidAsync(string uuid)
     {
-        var resposta = await _usuarioServices.ConsultaPorUUIDAsync(uuid);
+        DBUsuarioModel? resposta = await _usuarioServices.ConsultaPorUUIDAsync(uuid);
         return Ok(resposta);
     }
 
     [HttpGet()]
-    public ActionResult<IEnumerable<string>> GetPorTermo(string t)
+    public async Task<ActionResult<IEnumerable<string>>> GetPorTermo([Required(ErrorMessage = "O parâmetro 't' é obrigatório.")] string t)
     {
-        var resposta = _usuarioServices.ConsultaPorTermoAsync(t);
+        IEnumerable<RespostaGetDto>? resposta = await _usuarioServices.ConsultaPorTermoAsync(t);
         return Ok(resposta);
+    }
+
+    [HttpGet()]
+    [Route(template: "/todos-usuarios")]
+    public async Task<ActionResult<IEnumerable<string>>> GetAll()
+    {
+        IEnumerable<DBUsuarioModel>? resposta = await _usuarioServices.RetornaTudoAsync();
+        return Ok(resposta);
+    }
+
+    [HttpGet]
+    [Route("/contagem-pessoas")]
+    public async Task<ActionResult<int>> GetAsync()
+    {
+        return await _usuarioServices.CountUsuariosCadastradosAsync();
     }
 }
