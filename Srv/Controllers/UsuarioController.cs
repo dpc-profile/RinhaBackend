@@ -22,7 +22,7 @@ public class UsuarioController : ControllerBase
         {
             pessoaDto.Validate();
 
-            await _usuarioServices.ProcurarUsuarioAsync(pessoaDto.Apelido);
+            await _usuarioServices.ApelidoCadastradoAsync(pessoaDto.Apelido);
 
             DBUsuarioModel usuario = new()
             {

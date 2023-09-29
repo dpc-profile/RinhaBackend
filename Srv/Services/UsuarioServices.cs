@@ -17,7 +17,7 @@ class UsuarioServices : IUsuarioServices
         await _contexto.SaveChangesAsync();
     }
 
-    public async Task ProcurarUsuarioAsync(string apelido)
+    public async Task ApelidoCadastradoAsync(string apelido)
     {
         DBUsuarioModel? resultado = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Apelido == apelido);
 
