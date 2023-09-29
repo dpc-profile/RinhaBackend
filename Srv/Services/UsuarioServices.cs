@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace Api.Services;
 
 class UsuarioServices : IUsuarioServices
@@ -17,7 +15,7 @@ class UsuarioServices : IUsuarioServices
         await _contexto.SaveChangesAsync();
     }
 
-    public async Task ApelidoCadastradoAsync(string apelido)
+    public async Task VerificaApelidoCadastradoAsync(string apelido)
     {
         DBUsuarioModel? resultado = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Apelido == apelido);
 

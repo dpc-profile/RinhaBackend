@@ -1,14 +1,12 @@
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 string? connectionString = builder.Configuration.GetConnectionString("DbConnection");
 
-builder.Services.AddDbContext<BancoContexto>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-);
+// builder.Services.AddDbContext<BancoContexto>(options =>
+//     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+// );
 
-// builder.Services.AddDbContext<BancoContexto>(options => options.UseInMemoryDatabase("DBMemoria"));
+builder.Services.AddDbContext<BancoContexto>(options => options.UseInMemoryDatabase("DBMemoria"));
 
 builder.Services.AddControllers();
 

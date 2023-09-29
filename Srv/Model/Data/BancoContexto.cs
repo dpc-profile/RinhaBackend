@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace Api.Model.Data;
 
 public class BancoContexto : DbContext

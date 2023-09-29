@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Api.Controllers;
 
 [Route("/pessoas")]
@@ -22,20 +20,9 @@ public class UsuarioController : ControllerBase
         {
             pessoaDto.Validate();
 
-            await _usuarioServices.ApelidoCadastradoAsync(pessoaDto.Apelido);
+            await _usuarioServices.VerificaApelidoCadastradoAsync(pessoaDto.Apelido);
 
-            DBUsuarioModel usuario = new()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Nome = pessoaDto.Nome,
-                Nascimento = pessoaDto.Nascimento,
-                Apelido = pessoaDto.Apelido
-            };
-
-            if (pessoaDto.Stack != null)
-                usuario.Stack = string.Join( ", ", pessoaDto.Stack);
-
-            usuario.CampoSearch += $"{usuario.Nome},{usuario.Apelido},{usuario.Stack}";
+            DBUsuarioModel usuario = PopulaUsuarioModel(pessoaDto);
 
             await _usuarioServices.CadastraUsuarioAsync(usuario);
 
@@ -78,5 +65,23 @@ public class UsuarioController : ControllerBase
     public async Task<ActionResult<int>> GetAsync()
     {
         return await _usuarioServices.CountUsuariosCadastradosAsync();
+    }
+
+    private static DBUsuarioModel PopulaUsuarioModel(PessoaDto pessoaDto)
+    {
+        DBUsuarioModel usuario = new()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Nome = pessoaDto.Nome,
+            Nascimento = pessoaDto.Nascimento,
+            Apelido = pessoaDto.Apelido
+        };
+
+        if (pessoaDto.Stack != null)
+            usuario.Stack = string.Join( ", ", pessoaDto.Stack);
+
+        usuario.CampoSearch += $"{usuario.Nome},{usuario.Apelido},{usuario.Stack}";
+        
+        return usuario;
     }
 }
