@@ -30,6 +30,5 @@ Content-Type: application/json
 
 {
     "nome": "Mario",
-    "Apelido": "Do Armario",
     "Nascimento": "1985-13-09"
 }

@@ -16,16 +16,6 @@ public class PessoaDto
     
     public void Validate()
     {
-        // Validações
-        // UnprocessableEntity
-        //      X Apelido já cadastrado
-        //      X Nome nulo
-        //      X Apelido nulo
-        //
-        // BadRequest
-        //      X Nome não é uma string
-        //      X Stack tem algum elemento não string
-
         if (string.IsNullOrEmpty(Nome))
             throw new UnprocessableEntityException("O Nome está vazio ou nulo.");
         
@@ -36,7 +26,7 @@ public class PessoaDto
         {
             if (item.Length > 32 || item.Length == 0)
             {
-                throw new BadHttpRequestException("Os elemento da lista de Stack deve ser uma string com no máximo 32 caracteres.");
+                throw new BadRequestException("Os elemento da lista de Stack deve ser uma string com no máximo 32 caracteres.");
             }
         }
     }
