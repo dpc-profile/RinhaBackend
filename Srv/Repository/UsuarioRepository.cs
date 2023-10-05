@@ -1,5 +1,3 @@
-
-
 namespace Api.Repository;
 
 public class UsuarioRepository : IUsuarioRepository
@@ -17,12 +15,13 @@ public class UsuarioRepository : IUsuarioRepository
         await _contexto.SaveChangesAsync();
     }
 
-    public async Task<DBUsuarioModel> ConsultarUsuarioPorApelidoAsync(string apelido)
+    public async Task<DBUsuarioModel?> ConsultarUsuarioPorApelidoAsync(string apelido)
     {
-        return await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Apelido == apelido);
+        DBUsuarioModel? dBUsuarioModel = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Apelido == apelido);
+        return dBUsuarioModel;
     }
 
-    public async Task<List<DBUsuarioModel>?> ConsultarUsuarioPorTermoAsync(string termo)
+    public async Task<List<DBUsuarioModel>> ConsultarUsuarioPorTermoAsync(string termo)
     {
         return await _contexto.Usuarios
             .Where(x => EF.Functions.Like(x.CampoSearch, $"%{termo}%"))

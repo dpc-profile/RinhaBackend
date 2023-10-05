@@ -16,22 +16,22 @@ public class UsuarioServices : IUsuarioServices
 
     public async Task VerificaApelidoCadastradoAsync(string apelido)
     {
-        DBUsuarioModel? resultado = await _usuarioRepository.ConsultarUsuarioPorApelidoAsync(apelido);
+        DBUsuarioModel? consultaUsuarios = await _usuarioRepository.ConsultarUsuarioPorApelidoAsync(apelido);
 
-        if (resultado is not null)
+        if (consultaUsuarios is not null)
             throw new UnprocessableEntityException("Apelido já cadastrado");
     }
 
     public async Task<IEnumerable<RespostaGetDto>> ConsultaPorTermoAsync(string termo)
     {
-        List<DBUsuarioModel>? resposta = await _usuarioRepository.ConsultarUsuarioPorTermoAsync(termo);
+        List<DBUsuarioModel> consultaUsuarios = await _usuarioRepository.ConsultarUsuarioPorTermoAsync(termo);
 
-        if (resposta.Count is 0)
+        if (consultaUsuarios.Count is 0)
             return new List<RespostaGetDto>();
 
         List<RespostaGetDto> listaUsuarios = new();
 
-        foreach (DBUsuarioModel usuario in resposta)
+        foreach (DBUsuarioModel usuario in consultaUsuarios)
         {
             listaUsuarios.Add(new RespostaGetDto(){
                 Id = usuario.Id,
