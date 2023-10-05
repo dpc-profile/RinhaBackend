@@ -30,4 +30,21 @@ public class PessoaDto
             }
         }
     }
+    public DBUsuarioModel PopulaUsuarioModel()
+    {
+        DBUsuarioModel usuario = new()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Nome = Nome,
+            Nascimento = Nascimento,
+            Apelido = Apelido
+        };
+
+        if (Stack != null)
+            usuario.Stack = string.Join( ", ", Stack);
+
+        usuario.CampoSearch += $"{usuario.Nome},{usuario.Apelido},{usuario.Stack}";
+        
+        return usuario;
+    }
 }

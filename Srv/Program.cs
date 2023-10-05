@@ -6,11 +6,13 @@ string? connectionString = builder.Configuration.GetConnectionString("DbConnecti
 //     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 // );
 
-builder.Services.AddDbContext<BancoContexto>(options => options.UseInMemoryDatabase("DBMemoria"));
+builder.Services.AddDbContext<BancoContexto>(
+    options => options.UseInMemoryDatabase("DBMemoria"));
 
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IUsuarioServices, UsuarioServices>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

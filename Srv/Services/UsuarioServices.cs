@@ -1,23 +1,22 @@
 namespace Api.Services;
 
-class UsuarioServices : IUsuarioServices
+public class UsuarioServices : IUsuarioServices
 {
-    private readonly BancoContexto _contexto;
+    private readonly IUsuarioRepository _usuarioRepository;
 
-    public UsuarioServices(BancoContexto contexto)
+    public UsuarioServices(IUsuarioRepository usuarioRepository)
     {
-        _contexto = contexto;
+        _usuarioRepository = usuarioRepository;
     }
 
     public async Task CadastraUsuarioAsync(DBUsuarioModel usuario)
     {
-        await _contexto.Usuarios.AddAsync(usuario);
-        await _contexto.SaveChangesAsync();
+        await _usuarioRepository.GravarUsuarioAsync(usuario);
     }
 
     public async Task VerificaApelidoCadastradoAsync(string apelido)
     {
-        DBUsuarioModel? resultado = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Apelido == apelido);
+        DBUsuarioModel? resultado = await _usuarioRepository.ConsultarUsuarioPorApelidoAsync(apelido);
 
         if (resultado is not null)
             throw new UnprocessableEntityException("Apelido já cadastrado");
@@ -25,9 +24,7 @@ class UsuarioServices : IUsuarioServices
 
     public async Task<IEnumerable<RespostaGetDto>> ConsultaPorTermoAsync(string termo)
     {
-        var resposta = await _contexto.Usuarios
-            .Where(x => EF.Functions.Like(x.CampoSearch, $"%{termo}%"))
-            .ToListAsync();
+        List<DBUsuarioModel>? resposta = await _usuarioRepository.ConsultarUsuarioPorTermoAsync(termo);
 
         if (resposta.Count is 0)
             return new List<RespostaGetDto>();
@@ -50,16 +47,16 @@ class UsuarioServices : IUsuarioServices
 
     public async Task<DBUsuarioModel?> ConsultaPorUUIDAsync(string uuid)
     {
-        return await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Id == uuid);
+        return await _usuarioRepository.ConsultaUsuarioPorUUIDAsync(uuid);
     }
 
     public async Task<IEnumerable<DBUsuarioModel>> RetornaTudoAsync()
     {
-        return await _contexto.Usuarios.ToListAsync();
+        return await _usuarioRepository.RetornaTudoAsync();
     }
 
     public async Task<int> CountUsuariosCadastradosAsync()
     {
-        return await _contexto.Usuarios.CountAsync();
+        return await _usuarioRepository.CountUsuariosCadastradosAsync();
     }
 }

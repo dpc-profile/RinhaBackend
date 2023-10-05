@@ -22,7 +22,7 @@ public class UsuarioController : ControllerBase
 
             await _usuarioServices.VerificaApelidoCadastradoAsync(pessoaDto.Apelido);
 
-            DBUsuarioModel usuario = PopulaUsuarioModel(pessoaDto);
+            DBUsuarioModel usuario = pessoaDto.PopulaUsuarioModel();
 
             await _usuarioServices.CadastraUsuarioAsync(usuario);
 
@@ -67,21 +67,5 @@ public class UsuarioController : ControllerBase
         return await _usuarioServices.CountUsuariosCadastradosAsync();
     }
 
-    private static DBUsuarioModel PopulaUsuarioModel(PessoaDto pessoaDto)
-    {
-        DBUsuarioModel usuario = new()
-        {
-            Id = Guid.NewGuid().ToString(),
-            Nome = pessoaDto.Nome,
-            Nascimento = pessoaDto.Nascimento,
-            Apelido = pessoaDto.Apelido
-        };
-
-        if (pessoaDto.Stack != null)
-            usuario.Stack = string.Join( ", ", pessoaDto.Stack);
-
-        usuario.CampoSearch += $"{usuario.Nome},{usuario.Apelido},{usuario.Stack}";
-        
-        return usuario;
-    }
+    
 }
