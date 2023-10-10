@@ -8,8 +8,8 @@
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
           <Format>opencover</Format>
-          <Exclude>[*]*.Migrations.*</Exclude>
-          <ExcludeByFile>Srv/Program.cs</ExcludeByFile>
+          <Exclude>[*]*.Migrations.*, [*]*.Exceptions.*</Exclude>
+          <ExcludeByFile>**/Program.cs</ExcludeByFile>
         </Configuration>
       </DataCollector>
     </DataCollectors>

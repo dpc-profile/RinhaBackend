@@ -96,6 +96,34 @@ public class InteracoesDBTest
     }
 
     [Fact]
+    public async Task AposConsultaUsuarioPorApelido_DeveRetornarUmUsuario()
+    {
+        UsuarioRepository? repository = new(_bancoContexto);
+        UsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
+        
+        _bancoContexto.Usuarios.Add(usuario);
+        _bancoContexto.SaveChanges();
+
+        var resposta = await repository.ConsultarUsuarioPorApelidoAsync(usuario.Apelido);
+
+        Assert.NotNull(resposta);
+    }
+
+    [Fact]
+    public async Task AposConsultaUsuarioPorApelido_DeveRetornarNulo()
+    {
+        UsuarioRepository? repository = new(_bancoContexto);
+        UsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
+        
+        _bancoContexto.Usuarios.Add(usuario);
+        _bancoContexto.SaveChanges();
+
+        var resposta = await repository.ConsultarUsuarioPorApelidoAsync("Zezinho");
+
+        Assert.Null(resposta);
+    }
+
+    [Fact]
     public async Task AposContaUsuarios_DeveSerUm()
     {
         UsuarioRepository? repository = new(_bancoContexto);

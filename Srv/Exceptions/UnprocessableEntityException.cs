@@ -1,5 +1,6 @@
 namespace Api.Exceptions;
 
+[ExcludeFromCodeCoverage]
 [Serializable]
 public class UnprocessableEntityException : Exception
 {
