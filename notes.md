@@ -5,12 +5,11 @@ $ dotnet-ef migrations add MyMigration
 $ dotnet-ef database update
 
 # Gerar relatorio que alimentara o reporgenerator
-$ dotnet test ControleDeContatos.Tests \
---settings ControleDeContatos.Tests/coverlet.runsettings.xml
+$ dotnet test Tests --settings Tests/coverlet.runsettings.xml
 
 # Gerar relatório para HTML
 $ reportgenerator \
--reports:"ControleDeContatos.Tests/TestResults/**/coverage.opencover.xml" \
+-reports:"Tests/TestResults/**/coverage.opencover.xml" \
 -targetdir:"coveragereport" \
 -reporttypes:Html
 
