@@ -1,11 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using Api.Model;
-using Api.Model.Data;
-using Api.Repository;
-
-using Xunit;
 
 namespace TesteAPI;
 
