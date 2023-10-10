@@ -1,27 +1,25 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Api.Model;
 using Api.Model.Data;
-using Api.Model.Dto;
 using Api.Repository;
 
 using Xunit;
 
 namespace TesteAPI;
 
-public class TesteRepository
+public class InteracoesDBTest
 {
     private readonly BancoContexto _bancoContexto;
 
-    public TesteRepository()
+    public InteracoesDBTest()
     {
         _bancoContexto = ContextGenerator.Generate();
     }
 
     [Fact]
-    public async Task Testar_Gravar()
+    public async Task AposGravaUsuario_DeveTerUmUsuarioGravado()
     {
         UsuarioRepository? repository = new(_bancoContexto);
         DBUsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
@@ -32,7 +30,7 @@ public class TesteRepository
     }
 
     [Fact]
-    public async Task Testar_ConsultarPorUuid()
+    public async Task AposConsultaUsuarioPorUUID_NaoDeveSerNulo()
     {
         UsuarioRepository? repository = new(_bancoContexto);
         DBUsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
@@ -46,10 +44,10 @@ public class TesteRepository
     }
 
     [Theory]
-    [InlineData("Java")]
-    [InlineData("Teste")]
+    [InlineData("java")]
+    [InlineData("teste")]
     [InlineData("360")]
-    public async Task Testar_ConsultarPorTermo(string termo)
+    public async Task AposConsultaUsuarioPorTermo_NaoDeveSerListaVazia(string termo)
     {
         UsuarioRepository? repository = new(_bancoContexto);
         DBUsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
@@ -66,7 +64,7 @@ public class TesteRepository
     [InlineData("David")]
     [InlineData("Armando")]
     [InlineData("Python")]
-    public async Task Testar_ConsultarPorTermo_Empty(string termo)
+    public async Task AposConsultaUsuarioPorTermo_DeveSerListaVazia(string termo)
     {
         UsuarioRepository? repository = new(_bancoContexto);
         DBUsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
@@ -80,7 +78,7 @@ public class TesteRepository
     }
 
     [Fact]
-    public async Task Testar_ConsultarPorTermo_StackNull()
+    public async Task AposConsultaUsuarioPorTermo_QuantidadeDeveSerZero()
     {
         UsuarioRepository? repository = new(_bancoContexto);
         DBUsuarioModel? usuario = UsuarioDbGenerator.Generate_StackNull();
@@ -98,7 +96,7 @@ public class TesteRepository
     }
 
     [Fact]
-    public async Task Testar_CountUsuarios()
+    public async Task AposContaUsuarios_DeveSerUm()
     {
         UsuarioRepository? repository = new(_bancoContexto);
 
