@@ -9,14 +9,14 @@ public class UsuarioServices : IUsuarioServices
         _usuarioRepository = usuarioRepository;
     }
 
-    public async Task CadastraUsuarioAsync(DBUsuarioModel usuario)
+    public async Task CadastraUsuarioAsync(UsuarioModel usuario)
     {
         await _usuarioRepository.GravarUsuarioAsync(usuario);
     }
 
     public async Task VerificaApelidoCadastradoAsync(string apelido)
     {
-        DBUsuarioModel? consultaUsuarios = await _usuarioRepository.ConsultarUsuarioPorApelidoAsync(apelido);
+        UsuarioModel? consultaUsuarios = await _usuarioRepository.ConsultarUsuarioPorApelidoAsync(apelido);
 
         if (consultaUsuarios is not null)
             throw new UnprocessableEntityException("Apelido já cadastrado");
@@ -24,14 +24,14 @@ public class UsuarioServices : IUsuarioServices
 
     public async Task<IEnumerable<RespostaGetDto>> ConsultaPorTermoAsync(string termo)
     {
-        List<DBUsuarioModel> consultaUsuarios = await _usuarioRepository.ConsultarUsuarioPorTermoAsync(termo);
+        List<UsuarioModel> consultaUsuarios = await _usuarioRepository.ConsultarUsuarioPorTermoAsync(termo);
 
         if (consultaUsuarios.Count is 0)
             return new List<RespostaGetDto>();
 
         List<RespostaGetDto> listaUsuarios = new();
 
-        foreach (DBUsuarioModel usuario in consultaUsuarios)
+        foreach (UsuarioModel usuario in consultaUsuarios)
         {
             listaUsuarios.Add(new RespostaGetDto(){
                 Id = usuario.Id,
@@ -45,12 +45,12 @@ public class UsuarioServices : IUsuarioServices
         return listaUsuarios;
     }
 
-    public async Task<DBUsuarioModel?> ConsultaPorUUIDAsync(string uuid)
+    public async Task<UsuarioModel?> ConsultaPorUUIDAsync(string uuid)
     {
         return await _usuarioRepository.ConsultaUsuarioPorUUIDAsync(uuid);
     }
 
-    public async Task<IEnumerable<DBUsuarioModel>> RetornaTudoAsync()
+    public async Task<IEnumerable<UsuarioModel>> RetornaTudoAsync()
     {
         return await _usuarioRepository.RetornaTudoAsync();
     }

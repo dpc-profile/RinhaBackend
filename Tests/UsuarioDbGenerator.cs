@@ -5,9 +5,9 @@ namespace TesteAPI;
 
 public static class UsuarioDbGenerator
 {
-    public static DBUsuarioModel Generate_Full()
+    public static UsuarioModel Generate_Full()
     {
-        DBUsuarioModel usuario = new ()
+        UsuarioModel usuario = new ()
         {
             Id = Guid.NewGuid().ToString(),
             Nome = "Teste1",
@@ -23,9 +23,9 @@ public static class UsuarioDbGenerator
 
     }
 
-    public static DBUsuarioModel Generate_StackNull()
+    public static UsuarioModel Generate_StackNull()
     {
-        DBUsuarioModel usuario = new ()
+        UsuarioModel usuario = new ()
         {
             Id = Guid.NewGuid().ToString(),
             Nome = "Teste2",

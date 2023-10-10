@@ -22,7 +22,7 @@ public class InteracoesDBTest
     public async Task AposGravaUsuario_DeveTerUmUsuarioGravado()
     {
         UsuarioRepository? repository = new(_bancoContexto);
-        DBUsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
+        UsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
 
         await repository.GravarUsuarioAsync(usuario);
 
@@ -33,12 +33,12 @@ public class InteracoesDBTest
     public async Task AposConsultaUsuarioPorUUID_NaoDeveSerNulo()
     {
         UsuarioRepository? repository = new(_bancoContexto);
-        DBUsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
+        UsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
         
         _bancoContexto.Usuarios.Add(usuario);
         _bancoContexto.SaveChanges();
 
-        DBUsuarioModel? resposta = await repository.ConsultaUsuarioPorUUIDAsync(usuario.Id!);
+        UsuarioModel? resposta = await repository.ConsultaUsuarioPorUUIDAsync(usuario.Id!);
 
         Assert.NotNull(resposta);
     }
@@ -50,12 +50,12 @@ public class InteracoesDBTest
     public async Task AposConsultaUsuarioPorTermo_NaoDeveSerListaVazia(string termo)
     {
         UsuarioRepository? repository = new(_bancoContexto);
-        DBUsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
+        UsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
         
         _bancoContexto.Usuarios.Add(usuario);
         _bancoContexto.SaveChanges();
 
-        List<DBUsuarioModel>? resposta = await repository.ConsultarUsuarioPorTermoAsync(termo);
+        List<UsuarioModel>? resposta = await repository.ConsultarUsuarioPorTermoAsync(termo);
 
         Assert.NotEmpty(resposta);
     }
@@ -67,12 +67,12 @@ public class InteracoesDBTest
     public async Task AposConsultaUsuarioPorTermo_DeveSerListaVazia(string termo)
     {
         UsuarioRepository? repository = new(_bancoContexto);
-        DBUsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
+        UsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
         
         _bancoContexto.Usuarios.Add(usuario);
         _bancoContexto.SaveChanges();
 
-        List<DBUsuarioModel>? resposta = await repository.ConsultarUsuarioPorTermoAsync(termo);
+        List<UsuarioModel>? resposta = await repository.ConsultarUsuarioPorTermoAsync(termo);
 
         Assert.Empty(resposta);
     }
@@ -81,14 +81,14 @@ public class InteracoesDBTest
     public async Task AposConsultaUsuarioPorTermo_QuantidadeDeveSerZero()
     {
         UsuarioRepository? repository = new(_bancoContexto);
-        DBUsuarioModel? usuario = UsuarioDbGenerator.Generate_StackNull();
+        UsuarioModel? usuario = UsuarioDbGenerator.Generate_StackNull();
         
         _bancoContexto.Usuarios.Add(usuario);
         _bancoContexto.SaveChanges();
 
         string termo = "Java";
 
-        List<DBUsuarioModel>? resposta = await repository.ConsultarUsuarioPorTermoAsync(termo);
+        List<UsuarioModel>? resposta = await repository.ConsultarUsuarioPorTermoAsync(termo);
 
         int quantUsuarios = resposta.Count;
 
@@ -100,7 +100,7 @@ public class InteracoesDBTest
     {
         UsuarioRepository? repository = new(_bancoContexto);
 
-        DBUsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
+        UsuarioModel? usuario = UsuarioDbGenerator.Generate_Full();
         
         _bancoContexto.Usuarios.Add(usuario);
         _bancoContexto.SaveChanges();

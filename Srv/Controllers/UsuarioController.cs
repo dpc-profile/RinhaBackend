@@ -22,7 +22,7 @@ public class UsuarioController : ControllerBase
 
             await _usuarioServices.VerificaApelidoCadastradoAsync(pessoaDto.Apelido);
 
-            DBUsuarioModel usuario = pessoaDto.PopulaUsuarioModel();
+            UsuarioModel usuario = pessoaDto.PopulaUsuarioModel();
 
             await _usuarioServices.CadastraUsuarioAsync(usuario);
 
@@ -41,7 +41,7 @@ public class UsuarioController : ControllerBase
     [HttpGet("{uuid}")]
     public async Task<ActionResult<string>> GetPorUuidAsync(string uuid)
     {
-        DBUsuarioModel? resposta = await _usuarioServices.ConsultaPorUUIDAsync(uuid);
+        UsuarioModel? resposta = await _usuarioServices.ConsultaPorUUIDAsync(uuid);
         return Ok(resposta);
     }
 
@@ -56,7 +56,7 @@ public class UsuarioController : ControllerBase
     [Route(template: "/todos-usuarios")]
     public async Task<ActionResult<IEnumerable<string>>> GetAll()
     {
-        IEnumerable<DBUsuarioModel>? resposta = await _usuarioServices.RetornaTudoAsync();
+        IEnumerable<UsuarioModel>? resposta = await _usuarioServices.RetornaTudoAsync();
         return Ok(resposta);
     }
 

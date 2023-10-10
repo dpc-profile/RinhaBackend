@@ -6,11 +6,11 @@ public class BancoContexto : DbContext
     {
     }
 
-    public DbSet<DBUsuarioModel> Usuarios { get; set; }
+    public DbSet<UsuarioModel> Usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Defina aqui as configurações de mapeamento de suas entidades
-        modelBuilder.Entity<DBUsuarioModel>().ToTable("Usuarios");
+        modelBuilder.Entity<UsuarioModel>().ToTable("Usuarios");
     }
 }

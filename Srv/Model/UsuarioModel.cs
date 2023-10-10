@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Model;
 
-public class DBUsuarioModel
+public class UsuarioModel
 {
     [Key]
     [Required]
@@ -21,9 +21,4 @@ public class DBUsuarioModel
     public string? Nascimento { get; set;}
     public string? Stack { get; set;}
     public string? CampoSearch {get; set;}
-
-    public static implicit operator DBUsuarioModel(PessoaDto v)
-    {
-        throw new NotImplementedException();
-    }
 }

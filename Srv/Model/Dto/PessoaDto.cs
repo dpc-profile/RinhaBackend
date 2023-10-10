@@ -30,9 +30,9 @@ public class PessoaDto
             }
         }
     }
-    public DBUsuarioModel PopulaUsuarioModel()
+    public UsuarioModel PopulaUsuarioModel()
     {
-        DBUsuarioModel usuario = new()
+        UsuarioModel usuario = new()
         {
             Id = Guid.NewGuid().ToString(),
             Nome = Nome,

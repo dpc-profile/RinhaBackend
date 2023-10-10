@@ -2,10 +2,10 @@ namespace Api.Services;
 
 public interface IUsuarioServices
 {
-    public Task CadastraUsuarioAsync(DBUsuarioModel usuario);
-    public Task<DBUsuarioModel?> ConsultaPorUUIDAsync(string uuid);
+    public Task CadastraUsuarioAsync(UsuarioModel usuario);
+    public Task<UsuarioModel?> ConsultaPorUUIDAsync(string uuid);
     public Task VerificaApelidoCadastradoAsync(string apelido);
     public Task<IEnumerable<RespostaGetDto>> ConsultaPorTermoAsync(string termo);
-    public Task<IEnumerable<DBUsuarioModel>> RetornaTudoAsync();
+    public Task<IEnumerable<UsuarioModel>> RetornaTudoAsync();
     public Task<int> CountUsuariosCadastradosAsync();
 }
