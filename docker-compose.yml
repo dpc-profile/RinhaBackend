@@ -5,7 +5,7 @@ services:
     hostname: api1
     depends_on:
       - db
-      - redis
+      - nats
     expose:
       - "80"
     deploy:
@@ -19,7 +19,7 @@ services:
     hostname: api2
     depends_on:
       - db
-      - redis
+      - nats
     expose:
       - "80"
     deploy:
@@ -43,10 +43,10 @@ services:
           cpus: "0.25"
           memory: "0.5GB"
   
-  redis: # Cache
-    image: redis:alpine
+  nats: # Jobs
+    image: nats:alpine
     ports:
-       - "6379:6379"
+       - "4222:4222"
     deploy:
       resources:
         limits:
@@ -59,12 +59,24 @@ services:
       - '3306:3306'
     restart: on-failure
     environment:
-      - MYSQL_SERVER=mysql_db
+      - MYSQL_SERVER=db
       - MYSQL_DATABASE=db
       - MYSQL_ROOT_PASSWORD=asd09u123ncv
-      
     deploy:
       resources:
         limits:
           cpus: "0.75"
           memory: "1.5GB"
+
+  myAdmin:
+    image: phpmyadmin:5.2.1
+    ports:
+      - 8081:8081
+    links:
+      - db
+    environment:
+      PMA_HOST: 'db'
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    depends_on:
+      - db
