@@ -1,4 +1,7 @@
-using System.Collections.Generic;
+using Api.Model;
+using Api.Model.Data;
+using Api.Repository;
+using TesteAPI.Generators;
 
 namespace TesteAPI;
 
