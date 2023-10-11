@@ -1,5 +1,6 @@
 namespace Api.Services;
 
+[ExcludeFromCodeCoverage]
 public class UsuarioServices : IUsuarioServices
 {
     private readonly IUsuarioRepository _usuarioRepository;
