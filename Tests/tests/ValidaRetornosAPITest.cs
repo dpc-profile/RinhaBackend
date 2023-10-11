@@ -32,12 +32,12 @@ public class ValidaRetornosAPITest
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal((int)HttpStatusCode.Created, result.StatusCode);
+        Assert.Equal(expected: (int)HttpStatusCode.Created, actual: result.StatusCode);
         Assert.NotEmpty(result.Location);
     }
 
     [Fact]
-    public async void RetornaBadRequest_AoTentarGravarUsuario()
+    public async void RetornaBadRequest_AoTentarGravarUsuarioComStackInvalido()
     {
         // Arrange
         PessoaDto? pessoaDto = new()
@@ -55,11 +55,11 @@ public class ValidaRetornosAPITest
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal((int)HttpStatusCode.BadRequest, result.StatusCode);
+        Assert.Equal(expected: (int)HttpStatusCode.BadRequest, actual: result.StatusCode);
     }
 
     [Fact]
-    public async void RetornaUnprocessableEntity_AoTentarGravarUsuario()
+    public async void RetornaUnprocessableEntity_AoTentarGravarUsuarioComApelidoNulo()
     {
         // Arrange
         PessoaDto? pessoaDto = new()
@@ -77,6 +77,6 @@ public class ValidaRetornosAPITest
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal((int)HttpStatusCode.UnprocessableEntity, result.StatusCode);
+        Assert.Equal(expected: (int)HttpStatusCode.UnprocessableEntity, actual: result.StatusCode);
     }
 }
