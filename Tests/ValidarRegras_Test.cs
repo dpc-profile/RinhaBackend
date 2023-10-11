@@ -1,8 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 
-using Api.Exceptions;
-using Api.Model.Dto;
-
 namespace TesteAPI;
 
 public class ValidarRegrasTest
