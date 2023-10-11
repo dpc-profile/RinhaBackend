@@ -7,6 +7,9 @@ $ dotnet-ef database update
 # Gerar relatorio que alimentara o reporgenerator
 $ dotnet test Tests --settings Tests/coverlet.runsettings.xml
 
+# Report Generator Tool install
+$ dotnet tool install --global dotnet-reportgenerator-globaltool
+
 # Gerar relatório para HTML
 $ reportgenerator \
 -reports:"Tests/TestResults/**/coverage.opencover.xml" \

@@ -14,7 +14,7 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> PostAsync([FromBody] PessoaDto pessoaDto)
+    public async Task<ActionResult> GravaUsuarioAsync([FromBody] PessoaDto pessoaDto)
     {
         try
         {
@@ -62,7 +62,7 @@ public class UsuarioController : ControllerBase
 
     [HttpGet]
     [Route("/contagem-pessoas")]
-    public async Task<ActionResult<int>> GetAsync()
+    public async Task<ActionResult<int>> CountAsync()
     {
         return await _usuarioServices.CountUsuariosCadastradosAsync();
     }
