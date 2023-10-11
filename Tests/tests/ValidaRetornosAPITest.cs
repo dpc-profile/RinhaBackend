@@ -23,9 +23,7 @@ public class ValidaRetornosAPITest
             Nascimento = "2000-01-01",
             Stack = new[] { "Item1", "Item2" }
         };
-
         var mockRepo = new Mock<IUsuarioServices>();
-
         mockRepo.Setup(repo => repo.VerificaApelidoCadastradoAsync(It.IsAny<string>()));
         var controller = new UsuarioController(mockRepo.Object);
 
@@ -34,16 +32,12 @@ public class ValidaRetornosAPITest
 
         // Assert
         Assert.NotNull(result);
-
-        // Verifica se o status é Created
         Assert.Equal((int)HttpStatusCode.Created, result.StatusCode);
-
-        // Verifique se o "Location" contém uma URL
         Assert.NotEmpty(result.Location);
     }
 
     [Fact]
-    public void RetornaBadRequest_AoTentarGravarUsuario()
+    public async void RetornaBadRequest_AoTentarGravarUsuario()
     {
         // Arrange
         PessoaDto? pessoaDto = new()
@@ -54,23 +48,18 @@ public class ValidaRetornosAPITest
             Stack = new[] { "Item valido", "Item da Stack com mais de 32 caracteres" }
         };
         var mockRepo = new Mock<IUsuarioServices>();
-
-        // Instanciar o controller usando o obj do mockRepo
         var controller = new UsuarioController(mockRepo.Object);
 
         // Act
-        var result = controller.GravaUsuarioAsync(pessoaDto);
+        var result = await controller.GravaUsuarioAsync(pessoaDto) as BadRequestObjectResult;
 
         // Assert
-         // Confere o se o tipo é IActionResult
-        var actionResult = Assert.IsAssignableFrom<Task<IActionResult>>(result);
-
-        // Confere se o actionResult é uma BadRequest
-        Assert.IsAssignableFrom<BadRequestObjectResult>(actionResult.Result);
+        Assert.NotNull(result);
+        Assert.Equal((int)HttpStatusCode.BadRequest, result.StatusCode);
     }
 
     [Fact]
-    public void RetornaUnprocessableEntity_AoTentarGravarUsuario()
+    public async void RetornaUnprocessableEntity_AoTentarGravarUsuario()
     {
         // Arrange
         PessoaDto? pessoaDto = new()
@@ -81,18 +70,13 @@ public class ValidaRetornosAPITest
             Stack = new[] { "Item 1", "Item 2" }
         };
         var mockRepo = new Mock<IUsuarioServices>();
-
-        // Instanciar o controller usando o obj do mockRepo
         var controller = new UsuarioController(mockRepo.Object);
 
         // Act
-        var result = controller.GravaUsuarioAsync(pessoaDto);
+        var result = await controller.GravaUsuarioAsync(pessoaDto) as UnprocessableEntityObjectResult;
 
         // Assert
-         // Confere o se o tipo é IActionResult
-        var actionResult = Assert.IsAssignableFrom<Task<IActionResult>>(result);
-
-        // Confere se o actionResult é uma BadRequest
-        Assert.IsAssignableFrom<UnprocessableEntityObjectResult>(actionResult.Result);
+        Assert.NotNull(result);
+        Assert.Equal((int)HttpStatusCode.UnprocessableEntity, result.StatusCode);
     }
 }
