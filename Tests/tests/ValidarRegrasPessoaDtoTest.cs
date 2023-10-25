@@ -22,7 +22,7 @@ public class ValidarRegrasPessoaDtoTest
         bool valido = Validator.TryValidateObject(instance: pessoaDto, validationContext: context, validationResults: resultados, validateAllProperties: true);
 
         // Assert
-        Assert.False(valido);
+        Assert.False(valido, "pessoaDTO não pode ser valido.");
         Assert.Equal(2, resultados.Count);
         Assert.Equal("Apelido deve ter no maximo 32 caracteres", resultados[0].ErrorMessage);
         Assert.Equal("O formato da Data de Nascimento deve ser AAAA-MM-DD.", resultados[1].ErrorMessage);
