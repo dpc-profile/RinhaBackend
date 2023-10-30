@@ -64,6 +64,4 @@ public class UsuarioController : ControllerBase
     {
         return await _usuarioServices.CountUsuariosCadastradosAsync();
     }
-
-    
 }
