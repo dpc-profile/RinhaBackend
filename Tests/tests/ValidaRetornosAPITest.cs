@@ -128,4 +128,22 @@ public class ValidaRetornosAPITest
         var returnValue = Assert.IsType<UsuarioModel>(okObjectResult.Value);
         Assert.NotNull(returnValue);
     }
+
+    [Fact]
+    public async Task RetornaListaVazia_AoNaoTerNenhumUsuarioComOTermo()
+    {
+        throw new NotImplementedException();
+    }
+
+    [Fact]
+    public async Task RetornaListaComUmUsuario_AoPesquisarTermo()
+    {
+        throw new NotImplementedException();
+    }
+
+    [Fact]
+    public async Task RetornaListaComDoisUsuario_AoPesquisarTermo()
+    {
+        throw new NotImplementedException();
+    }
 }
