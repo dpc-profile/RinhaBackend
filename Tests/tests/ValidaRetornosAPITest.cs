@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 
 using Api.Controllers;
@@ -28,12 +29,12 @@ public class ValidaRetornosAPITest
         var controller = new UsuarioController(mockServices.Object);
 
         // Act
-        var result = await controller.GravaUsuarioAsync(pessoaDto) as CreatedResult;
+        var resultado = await controller.GravaUsuarioAsync(pessoaDto) as CreatedResult;
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expected: (int)HttpStatusCode.Created, actual: result.StatusCode);
-        Assert.NotEmpty(result.Location);
+        Assert.NotNull(resultado);
+        Assert.Equal(expected: (int)HttpStatusCode.Created, actual: resultado.StatusCode);
+        Assert.NotEmpty(resultado.Location);
     }
 
     [Fact]
@@ -51,11 +52,11 @@ public class ValidaRetornosAPITest
         var controller = new UsuarioController(mockServices.Object);
 
         // Act
-        var result = await controller.GravaUsuarioAsync(pessoaDto) as BadRequestObjectResult;
+        var resultado = await controller.GravaUsuarioAsync(pessoaDto) as BadRequestObjectResult;
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expected: (int)HttpStatusCode.BadRequest, actual: result.StatusCode);
+        Assert.NotNull(resultado);
+        Assert.Equal(expected: (int)HttpStatusCode.BadRequest, actual: resultado.StatusCode);
     }
 
     [Fact]
@@ -73,11 +74,11 @@ public class ValidaRetornosAPITest
         var controller = new UsuarioController(mockServices.Object);
 
         // Act
-        var result = await controller.GravaUsuarioAsync(pessoaDto) as UnprocessableEntityObjectResult;
+        var resultado = await controller.GravaUsuarioAsync(pessoaDto) as UnprocessableEntityObjectResult;
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expected: (int)HttpStatusCode.UnprocessableEntity, actual: result.StatusCode);
+        Assert.NotNull(resultado);
+        Assert.Equal(expected: (int)HttpStatusCode.UnprocessableEntity, actual: resultado.StatusCode);
     }
 
     [Fact]
@@ -88,10 +89,10 @@ public class ValidaRetornosAPITest
         var controller = new UsuarioController(mockServices.Object);
 
         // Act
-        var result = await controller.GetPorUuidAsync("uuidQueNaoExiste");
+        var resultado = await controller.GetPorUuidAsync("uuidQueNaoExiste");
 
         // Assert
-        var actionResult = Assert.IsType<ActionResult<string>>(result);
+        var actionResult = Assert.IsType<ActionResult<string>>(resultado);
         Assert.NotNull(actionResult);
 
         var okObjectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -143,22 +144,83 @@ public class ValidaRetornosAPITest
         var service = new UsuarioServices(mockRepo.Object);
 
         // Act
-        var result = await service.ConsultaPorTermoAsync("Termo");
+        var resultado = await service.ConsultaPorTermoAsync("Termo");
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Empty(result);
+        Assert.NotNull(resultado);
+        Assert.Empty(resultado);
     }
 
-    [Fact(Skip = "Não implementado ainda")]
+    [Fact]
     public async Task RetornaListaComUmUsuario_AoPesquisarTermo()
     {
-        throw new NotImplementedException();
+        // Arrange
+        List<UsuarioModel> listaUsuarios = new();
+
+        UsuarioModel usuario1 = new ()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Nome = "Teste1",
+            Nascimento = "2023-11-23",
+            Apelido = "XxTest360xX",
+            Stack = "C#, Java, NodeJS",
+            
+        };
+
+        listaUsuarios.Add(usuario1);
+        
+        var mockRepo = new Mock<IUsuarioRepository>();
+        mockRepo.Setup(x => x.ConsultarUsuarioPorTermoAsync(It.IsAny<string>()))
+                .ReturnsAsync(listaUsuarios);
+        var service = new UsuarioServices(mockRepo.Object);
+
+        // Act
+        var resultado = await service.ConsultaPorTermoAsync(It.IsAny<string>());
+
+        // Assert
+        Assert.NotNull(resultado);
+        Assert.NotEmpty(resultado);
+        Assert.Single(resultado);
     }
 
-    [Fact(Skip = "Não implementado ainda")]
+    [Fact]
     public async Task RetornaListaComDoisUsuario_AoPesquisarTermo()
     {
-        throw new NotImplementedException();
+        // Arrange
+        List<UsuarioModel> listaUsuarios = new();
+
+        UsuarioModel usuario1 = new ()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Nome = "Teste1",
+            Nascimento = "2023-11-23",
+            Apelido = "XxTest360xX",
+            Stack = "C#, Java, NodeJS, Python"
+        };
+
+        UsuarioModel usuario2 = new ()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Nome = "Teste2",
+            Nascimento = "2023-11-23",
+            Apelido = "Testtt",
+            Stack = "Python"
+        };
+
+        listaUsuarios.Add(usuario1);
+        listaUsuarios.Add(usuario2);
+        
+        var mockRepo = new Mock<IUsuarioRepository>();
+        mockRepo.Setup(x => x.ConsultarUsuarioPorTermoAsync("Python"))
+                .ReturnsAsync(listaUsuarios);
+        var service = new UsuarioServices(mockRepo.Object);
+
+        // Act
+        var resultado = await service.ConsultaPorTermoAsync("Python");
+
+        // Assert
+        Assert.NotNull(resultado);
+        Assert.True(resultado.Any(), "A lista precisa ter conteudo");
+        Assert.Equal(expected: 2, actual: resultado.Count());
     }
 }
