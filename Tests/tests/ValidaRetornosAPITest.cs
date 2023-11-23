@@ -116,7 +116,7 @@ public class ValidaRetornosAPITest
         };
 
         var mockServices = new Mock<IUsuarioServices>();
-        mockServices.Setup(x => x.ConsultaPorUUIDAsync(It.IsAny<string>()))
+        mockServices.Setup(x => x.ConsultaPorUUIDAsync(uuid))
                     .ReturnsAsync(usuario);
         var controller = new UsuarioController(mockServices.Object);
 
@@ -222,5 +222,54 @@ public class ValidaRetornosAPITest
         Assert.NotNull(resultado);
         Assert.True(resultado.Any(), "A lista precisa ter conteudo");
         Assert.Equal(expected: 2, actual: resultado.Count());
+    }
+
+    [Fact]
+    public async void RetornarOkVazio_AoConsultarTermo()
+    {
+        // Arrange
+        var mockServices = new Mock<IUsuarioServices>();
+        var controller = new UsuarioController(mockServices.Object);
+
+        // Act
+        var resultado = await controller.GetPorTermo("Python");
+
+        // Assert
+        var actionResult = Assert.IsType<ActionResult<IEnumerable<string>>>(resultado);
+        Assert.NotNull(actionResult);
+
+        var okObjectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+        Assert.Equal(expected: (int)HttpStatusCode.OK, actual: okObjectResult.StatusCode);
+        // Assert.Empty(okObjectResult.Value.);
+    }
+
+    [Fact]
+    public async Task RetornarOkComUmUsuario_AoConsultarTermo()
+    {
+        // Arrange
+        string termo = "Python";
+        List<RespostaGetDto> listaUsuarios = new();
+
+        RespostaGetDto usuario1 = new()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Nome = "Teste1",
+            Nascimento = "2023-11-23",
+            Apelido = "XxTest360xX",
+            Stack = new List<string> {"C#, Java, NodeJS, Python"}
+        };
+
+        listaUsuarios.Add(usuario1);
+
+        var mockServices = new Mock<IUsuarioServices>();
+        // mockServices.Setup(x => x.ConsultaPorTermoAsync(termo))
+        //     .ReturnsAsync(listaUsuarios);
+        var controller = new UsuarioController(mockServices.Object);
+
+        // Act
+        var result = await controller.GetPorTermo(termo);
+
+        // Assert
+        
     }
 }
