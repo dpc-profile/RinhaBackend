@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  api1: # API - Instância 01
+  api1: &api # API - Instância 01
     image: api
     hostname: api1
     depends_on:
@@ -15,18 +15,8 @@ services:
           memory: "0.375GB"
 
   api2: # API - Instância 02
-    image: api
+    <<: *api
     hostname: api2
-    depends_on:
-      - db
-      - nats
-    expose:
-      - "80"
-    deploy:
-      resources:
-        limits:
-          cpus: "0.20"
-          memory: "0.375GB"
 
   nginx: # Load Balancer
     image: nginx:latest
