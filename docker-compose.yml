@@ -1,7 +1,9 @@
 version: "3.9"
 services:
   api1: &api # API - Instância 01
-    image: api
+    build:
+      context: .
+      dockerfile: Srv/Dockerfile
     hostname: api1
     depends_on:
       - db
