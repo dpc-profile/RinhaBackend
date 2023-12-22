@@ -1,11 +1,12 @@
 version: "3.9"
 services:
-  api1: # API - Instância 01
-    image: api
+  api1: &api # API - Instância 01
+    build:
+      context: .
+      dockerfile: Srv/Dockerfile
     hostname: api1
     depends_on:
       - db
-      - nats
     expose:
       - "80"
     deploy:
@@ -15,18 +16,8 @@ services:
           memory: "0.375GB"
 
   api2: # API - Instância 02
-    image: api
+    <<: *api
     hostname: api2
-    depends_on:
-      - db
-      - nats
-    expose:
-      - "80"
-    deploy:
-      resources:
-        limits:
-          cpus: "0.20"
-          memory: "0.375GB"
 
   nginx: # Load Balancer
     image: nginx:latest
@@ -43,40 +34,30 @@ services:
           cpus: "0.25"
           memory: "0.5GB"
   
-  nats: # Jobs
-    image: nats:alpine
+  db:
+    image: postgres:16-alpine
+    hostname: db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=rinha
+    volumes:
+      - ./configs/CREATE_TABLE_PESSOAS.sql:/docker-entrypoint-initdb.d/CREATE_TABLE_PESSOAS.sql
     ports:
-       - "4222:4222"
+      - "5432:5432"
     deploy:
       resources:
         limits:
-          cpus: "0.10"
-          memory: "0.250GB"
+          cpus: '0.15'
+          memory: '0.4GB'
 
-  db: # Banco de dados
-    image: mysql:8.1
-    ports:
-      - '3306:3306'
-    restart: on-failure
+  pgadmin: #Apenas para debug
+    image: dpage/pgadmin4
     environment:
-      - MYSQL_SERVER=db
-      - MYSQL_DATABASE=db
-      - MYSQL_ROOT_PASSWORD=asd09u123ncv
-    deploy:
-      resources:
-        limits:
-          cpus: "0.75"
-          memory: "1.5GB"
-
-  myAdmin:
-    image: phpmyadmin:5.2.1
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+      # PGADMIN_LISTEN_PORT: 5050
     ports:
-      - 8081:8081
-    links:
-      - db
-    environment:
-      PMA_HOST: 'db'
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
+      - "5555:80"
     depends_on:
       - db

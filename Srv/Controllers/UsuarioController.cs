@@ -4,17 +4,15 @@ namespace Api.Controllers;
 [ApiController]
 public class UsuarioController : ControllerBase
 {
-    private readonly ILogger<UsuarioController> _logger;
     private readonly IUsuarioServices _usuarioServices;
 
-    public UsuarioController(ILogger<UsuarioController> logger, IUsuarioServices usuarioServices)
+    public UsuarioController(IUsuarioServices usuarioServices)
     {
-        _logger = logger;
         _usuarioServices = usuarioServices;
     }
 
     [HttpPost]
-    public async Task<ActionResult> PostAsync([FromBody] PessoaDto pessoaDto)
+    public async Task<IActionResult> GravaUsuarioAsync([FromBody] PessoaDto pessoaDto)
     {
         try
         {
@@ -62,10 +60,8 @@ public class UsuarioController : ControllerBase
 
     [HttpGet]
     [Route("/contagem-pessoas")]
-    public async Task<ActionResult<int>> GetAsync()
+    public async Task<ActionResult<int>> CountAsync()
     {
         return await _usuarioServices.CountUsuariosCadastradosAsync();
     }
-
-    
 }

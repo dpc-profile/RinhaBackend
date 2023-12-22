@@ -1,5 +1,6 @@
 namespace Api.Model.Dto;
 
+[ExcludeFromCodeCoverage]
 public class RespostaGetDto
 {
     public string? Id { get; set;}

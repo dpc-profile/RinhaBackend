@@ -1,10 +1,6 @@
-using System;
-
-using Api.Model.Data;
-
 using Microsoft.EntityFrameworkCore;
 
-namespace TesteAPI;
+namespace TesteAPI.Generators;
 
 public static class ContextGenerator
 {

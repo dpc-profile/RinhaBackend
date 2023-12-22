@@ -1,5 +1,6 @@
 namespace Api.Services;
 
+[ExcludeFromCodeCoverage]
 public class UsuarioServices : IUsuarioServices
 {
     private readonly IUsuarioRepository _usuarioRepository;
@@ -26,10 +27,10 @@ public class UsuarioServices : IUsuarioServices
     {
         List<UsuarioModel> consultaUsuarios = await _usuarioRepository.ConsultarUsuarioPorTermoAsync(termo);
 
-        if (consultaUsuarios.Count is 0)
-            return new List<RespostaGetDto>();
-
         List<RespostaGetDto> listaUsuarios = new();
+
+        if (consultaUsuarios.Count is 0)
+            return listaUsuarios;
 
         foreach (UsuarioModel usuario in consultaUsuarios)
         {

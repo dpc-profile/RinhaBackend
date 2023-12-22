@@ -1,7 +1,4 @@
-using System;
-using Api.Model;
-
-namespace TesteAPI;
+namespace TesteAPI.Generators;
 
 public static class UsuarioDbGenerator
 {
