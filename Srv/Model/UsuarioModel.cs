@@ -1,11 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Api.Model;
 
 public class UsuarioModel
 {
-    [Key]
-    [Required]
     public string? Id { get; set;}
     [Required(ErrorMessage = "Apelido é obrigatório.")]
     [MaxLength(length: 32, ErrorMessage = "Apelido deve ter no maximo 32 caracteres")]

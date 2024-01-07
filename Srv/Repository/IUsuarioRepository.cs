@@ -2,7 +2,7 @@ namespace Api.Repository;
 
 public interface IUsuarioRepository
 {
-    public Task GravarUsuarioAsync(UsuarioModel usuario);
+    public Task<Guid> GravarUsuarioAsync(UsuarioModel usuario);
     public Task<UsuarioModel?> ConsultarUsuarioPorApelidoAsync(string apelido);
     public Task<List<UsuarioModel>> ConsultarUsuarioPorTermoAsync(string termo);
     public Task<UsuarioModel?> ConsultaUsuarioPorUUIDAsync(string uuid);

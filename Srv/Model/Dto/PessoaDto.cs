@@ -34,7 +34,6 @@ public class PessoaDto
     {
         UsuarioModel usuario = new()
         {
-            Id = Guid.NewGuid().ToString(),
             Nome = Nome,
             Nascimento = Nascimento,
             Apelido = Apelido
@@ -42,8 +41,6 @@ public class PessoaDto
 
         if (Stack != null)
             usuario.Stack = string.Join(", ", Stack);
-
-        usuario.CampoSearch += $"{usuario.Nome},{usuario.Apelido},{usuario.Stack}";
 
         return usuario;
     }

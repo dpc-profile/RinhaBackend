@@ -5,10 +5,13 @@ namespace Api.Controllers;
 public class UsuarioController : ControllerBase
 {
     private readonly IUsuarioServices _usuarioServices;
+    private readonly ILogger<UsuarioRepository> _logger;
 
-    public UsuarioController(IUsuarioServices usuarioServices)
+
+    public UsuarioController(IUsuarioServices usuarioServices, ILogger<UsuarioRepository> logger)
     {
         _usuarioServices = usuarioServices;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -18,13 +21,16 @@ public class UsuarioController : ControllerBase
         {
             pessoaDto.Validate();
 
-            await _usuarioServices.VerificaApelidoCadastradoAsync(pessoaDto.Apelido);
+            // await _usuarioServices.VerificaApelidoCadastradoAsync(pessoaDto.Apelido);
 
             UsuarioModel usuario = pessoaDto.PopulaUsuarioModel();
 
-            await _usuarioServices.CadastraUsuarioAsync(usuario);
+            Guid uuid = await _usuarioServices.CadastraUsuarioAsync(usuario);
 
-            return Created($"/pessoa/{usuario.Id}", pessoaDto);
+            if (uuid == Guid.Empty)
+                throw new UnprocessableEntityException("Apelido já cadastrado");
+
+            return Created($"/pessoa/{uuid}", pessoaDto);
         }
         catch (BadRequestException e)
         {
@@ -33,6 +39,11 @@ public class UsuarioController : ControllerBase
         catch (UnprocessableEntityException e)
         {
             return UnprocessableEntity(e.Message);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Exceção não esperada.", e);
+            return BadRequest(e.Message);
         }
     }
 

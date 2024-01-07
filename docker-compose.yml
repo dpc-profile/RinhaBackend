@@ -42,7 +42,7 @@ services:
       - POSTGRES_PASSWORD=123
       - POSTGRES_DB=rinha
     volumes:
-      - ./configs/CREATE_TABLE_PESSOAS.sql:/docker-entrypoint-initdb.d/CREATE_TABLE_PESSOAS.sql
+      - ./sql:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     deploy:

@@ -1,45 +1,73 @@
-namespace Api.Repository;
+using Dapper;
 
+using Npgsql;
+
+namespace Api.Repository;
 public class UsuarioRepository : IUsuarioRepository
 {
-    private readonly BancoContexto _contexto;
+    private readonly ILogger<UsuarioRepository> _logger;
+    private readonly IConfiguration _config;
 
-    public UsuarioRepository(BancoContexto contexto)
+
+    public UsuarioRepository(ILogger<UsuarioRepository> logger, IConfiguration config)
     {
-        _contexto = contexto;
+        _logger = logger;
+        _config = config;
+    }
+    public async Task<Guid> GravarUsuarioAsync(UsuarioModel usuario)
+    {
+        string connString = _config.GetConnectionString("postgresql");
+
+        using (var connection = new NpgsqlConnection(connString))
+        {
+            try
+            {
+                connection.Open();
+                _logger.LogInformation("Conexão aberta com sucesso!");
+
+                string sql = "INSERT INTO pessoas(apelido, nome, nascimento, stack) VALUES(@Apelido, @Nome, @Nascimento, @Stack) ON CONFLICT (apelido) DO NOTHING RETURNING id";
+                Guid uuid = await connection.QueryFirstOrDefaultAsync<Guid>(sql, usuario);
+                
+                return uuid;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(exception: ex, $"Erro ao abrir a conexão:");
+                return Guid.Empty;
+            }
+            finally
+            {
+                connection.Close();
+                _logger.LogInformation("Conexão fechada.");
+            }
+        }
     }
 
-    public async Task GravarUsuarioAsync(UsuarioModel usuario)
+    public Task<UsuarioModel?> ConsultarUsuarioPorApelidoAsync(string apelido)
     {
-        await _contexto.Usuarios.AddAsync(usuario);
-        await _contexto.SaveChangesAsync();
+        throw new NotImplementedException();
     }
 
-    public async Task<UsuarioModel?> ConsultarUsuarioPorApelidoAsync(string apelido)
+    public Task<List<UsuarioModel>> ConsultarUsuarioPorTermoAsync(string termo)
     {
-        UsuarioModel? dBUsuarioModel = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Apelido == apelido);
-        return dBUsuarioModel;
+        throw new NotImplementedException();
     }
 
-    public async Task<List<UsuarioModel>> ConsultarUsuarioPorTermoAsync(string termo)
+    public Task<UsuarioModel?> ConsultaUsuarioPorUUIDAsync(string uuid)
     {
-        return await _contexto.Usuarios
-            .Where(x => EF.Functions.Like(x.CampoSearch, $"%{termo}%"))
-            .ToListAsync();
+        throw new NotImplementedException();
     }
 
-    public async Task<UsuarioModel?> ConsultaUsuarioPorUUIDAsync(string uuid)
+    public Task<int> CountUsuariosCadastradosAsync()
     {
-        return await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Id == uuid);
+        throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<UsuarioModel>> RetornaTudoAsync()
+    
+
+    public Task<IEnumerable<UsuarioModel>> RetornaTudoAsync()
     {
-        return await _contexto.Usuarios.ToListAsync();
+        throw new NotImplementedException();
     }
 
-    public async Task<int> CountUsuariosCadastradosAsync()
-    {
-        return await _contexto.Usuarios.CountAsync();
-    }
 }
