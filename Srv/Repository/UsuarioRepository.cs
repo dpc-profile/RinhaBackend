@@ -25,10 +25,33 @@ public class UsuarioRepository : IUsuarioRepository
                 connection.Open();
                 _logger.LogInformation("Conexão aberta com sucesso!");
 
-                string sql = "INSERT INTO pessoas(apelido, nome, nascimento, stack) VALUES(@Apelido, @Nome, @Nascimento, @Stack) ON CONFLICT (apelido) DO NOTHING RETURNING id";
-                Guid uuid = await connection.QueryFirstOrDefaultAsync<Guid>(sql, usuario);
-                
+                string sql = "SELECT INS_PESSOA(@pApelido, @pNome, @pNascimento, @pStack)";
+
+                var parametros = new
+                {
+                    pApelido = usuario.Apelido,
+                    pNome = usuario.Nome,
+                    pNascimento = usuario.Nascimento,
+                    pStack = usuario.Stack
+                };
+
+                Guid uuid = await connection.QueryFirstOrDefaultAsync<Guid>(sql, parametros, commandType: System.Data.CommandType.Text);
+
                 return uuid;
+            }
+            catch (PostgresException ex)
+            {
+                if (ex.SqlState == "P0001" && ex.MessageText.Contains("Valor duplicado na coluna 'apelido'"))
+                {
+                    _logger.LogError("Tentativa de inserção de valor duplicado na coluna 'apelido'");
+                }
+                else
+                {
+                    _logger.LogError(ex,"Erro não esperado do PostgreSQL");
+                }
+
+                return Guid.Empty;
+
             }
             catch (Exception ex)
             {
@@ -63,7 +86,7 @@ public class UsuarioRepository : IUsuarioRepository
         throw new NotImplementedException();
     }
 
-    
+
 
     public Task<IEnumerable<UsuarioModel>> RetornaTudoAsync()
     {

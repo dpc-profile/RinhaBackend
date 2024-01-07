@@ -15,14 +15,6 @@ public class UsuarioServices : IUsuarioServices
         return await _usuarioRepository.GravarUsuarioAsync(usuario);
     }
 
-    public async Task VerificaApelidoCadastradoAsync(string apelido)
-    {
-        UsuarioModel? consultaUsuarios = await _usuarioRepository.ConsultarUsuarioPorApelidoAsync(apelido);
-
-        if (consultaUsuarios is not null)
-            throw new UnprocessableEntityException("Apelido já cadastrado");
-    }
-
     public async Task<IEnumerable<RespostaGetDto>> ConsultaPorTermoAsync(string termo)
     {
         List<UsuarioModel> consultaUsuarios = await _usuarioRepository.ConsultarUsuarioPorTermoAsync(termo);

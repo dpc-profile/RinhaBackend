@@ -42,7 +42,7 @@ public class UsuarioController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError("Exceção não esperada.", e);
+            _logger.LogError(exception: e, "Exceção não esperada.");
             return BadRequest(e.Message);
         }
     }
