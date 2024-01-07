@@ -10,7 +10,7 @@ public class UsuarioServices : IUsuarioServices
         _usuarioRepository = usuarioRepository;
     }
 
-    public async Task<Guid> CadastraUsuarioAsync(UsuarioModel usuario)
+    public async Task<Guid?> CadastraUsuarioAsync(UsuarioModel usuario)
     {
         return await _usuarioRepository.GravarUsuarioAsync(usuario);
     }

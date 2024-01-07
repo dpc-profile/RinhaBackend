@@ -12,12 +12,8 @@ BEGIN
     VALUES(pApelido, pNome, pNascimento, pStack)
     ON CONFLICT (apelido) DO NOTHING
     RETURNING id INTO novo_id;
-
-    IF novo_id IS NOT NULL THEN
-        RETURN novo_id;
-    ELSE
-        -- Tratar o conflito, lançar uma exceção ou retornar um valor específico
-        RAISE EXCEPTION 'Valor duplicado na coluna ''apelido''';
-    END IF;
+    
+    RETURN novo_id;
+    
 END;
 $$ LANGUAGE plpgsql;

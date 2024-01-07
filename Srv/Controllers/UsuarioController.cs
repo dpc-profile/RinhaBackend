@@ -25,9 +25,9 @@ public class UsuarioController : ControllerBase
 
             UsuarioModel usuario = pessoaDto.PopulaUsuarioModel();
 
-            Guid uuid = await _usuarioServices.CadastraUsuarioAsync(usuario);
+            Guid? uuid = await _usuarioServices.CadastraUsuarioAsync(usuario);
 
-            if (uuid == Guid.Empty)
+            if (uuid == null)
                 throw new UnprocessableEntityException("Apelido já cadastrado");
 
             return Created($"/pessoa/{uuid}", pessoaDto);

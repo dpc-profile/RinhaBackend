@@ -7,18 +7,18 @@ public class UsuarioRepository : IUsuarioRepository
 {
     private readonly ILogger<UsuarioRepository> _logger;
     private readonly IConfiguration _config;
+    private readonly string? _coonString;
 
 
     public UsuarioRepository(ILogger<UsuarioRepository> logger, IConfiguration config)
     {
         _logger = logger;
         _config = config;
+        _coonString = _config.GetConnectionString("postgresql");;
     }
-    public async Task<Guid> GravarUsuarioAsync(UsuarioModel usuario)
+    public async Task<Guid?> GravarUsuarioAsync(UsuarioModel usuario)
     {
-        string connString = _config.GetConnectionString("postgresql");
-
-        using (var connection = new NpgsqlConnection(connString))
+        using (var connection = new NpgsqlConnection(_coonString))
         {
             try
             {
@@ -35,28 +35,14 @@ public class UsuarioRepository : IUsuarioRepository
                     pStack = usuario.Stack
                 };
 
-                Guid uuid = await connection.QueryFirstOrDefaultAsync<Guid>(sql, parametros, commandType: System.Data.CommandType.Text);
+                Guid? uuid = await connection.QueryFirstOrDefaultAsync<Guid?>(sql, parametros, commandType: System.Data.CommandType.Text);
 
                 return uuid;
-            }
-            catch (PostgresException ex)
-            {
-                if (ex.SqlState == "P0001" && ex.MessageText.Contains("Valor duplicado na coluna 'apelido'"))
-                {
-                    _logger.LogError("Tentativa de inserção de valor duplicado na coluna 'apelido'");
-                }
-                else
-                {
-                    _logger.LogError(ex,"Erro não esperado do PostgreSQL");
-                }
-
-                return Guid.Empty;
-
             }
             catch (Exception ex)
             {
                 _logger.LogError(exception: ex, $"Erro ao abrir a conexão:");
-                return Guid.Empty;
+                return null;
             }
             finally
             {
